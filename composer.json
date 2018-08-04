@@ -15,7 +15,9 @@
         "issues": "http://github.com/Innmind/HttpServer/issues"
     },
     "require": {
-        "php": "~7.2"
+        "php": "~7.2",
+        "innmind/http": "^3.5",
+        "innmind/filesystem": "^3.2"
     },
     "autoload": {
         "psr-4": {
