@@ -41,9 +41,15 @@ abstract class Main
         }
 
         $send($response);
+
+        $this->terminate($request, $response);
     }
 
     abstract protected function main(ServerRequest $request): Response;
+
+    protected function terminate(ServerRequest $request, Response $response): void
+    {
+    }
 
     private function badRequest(): Response
     {
