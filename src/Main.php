@@ -16,15 +16,22 @@ use Innmind\Http\{
 };
 use Innmind\Filesystem\Stream\StringStream;
 use Innmind\TimeContinuum\TimeContinuum\Earth;
+use Innmind\OperatingSystem\{
+    Factory,
+    OperatingSystem,
+};
 
 abstract class Main
 {
     final public function __construct(
         ServerRequestFactoryInterface $factory = null,
-        Sender $send = null
+        Sender $send = null,
+        TimeContinuumInterface $clock = null
     ) {
+        $clock = $clock ?? new Earth;
         $factory = $factory ?? ServerRequestFactory::default();
-        $send = $send ?? new ResponseSender(new Earth);
+        $send = $send ?? new ResponseSender($clock);
+        $os = Factory::build($clock);
 
         try {
             $request = $factory->make();
@@ -35,7 +42,7 @@ abstract class Main
         }
 
         try {
-            $response = $this->main($request);
+            $response = $this->main($request, $os);
         } catch (\Throwable $e) {
             $response = $this->serverError($request);
         }
@@ -45,7 +52,7 @@ abstract class Main
         $this->terminate($request, $response);
     }
 
-    abstract protected function main(ServerRequest $request): Response;
+    abstract protected function main(ServerRequest $request, OperatingSystem $os): Response;
 
     protected function terminate(ServerRequest $request, Response $response): void
     {
