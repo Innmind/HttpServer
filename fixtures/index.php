@@ -9,10 +9,11 @@ use Innmind\Http\Message\{
     Response,
     StatusCode\StatusCode,
 };
+use Innmind\OperatingSystem\OperatingSystem;
 
 new class extends Main
 {
-    protected function main(ServerRequest $request): Response
+    protected function main(ServerRequest $request, OperatingSystem $os): Response
     {
         //echo back server
         return new Response\Response(
