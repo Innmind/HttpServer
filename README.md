@@ -24,9 +24,10 @@ use Innmind\Http\Message\{
     ServerRequest,
     Response,
 };
+use Innmind\OperatingSystem\OperatingSystem;
 
 new class extends Main {
-    protected function main(ServerRequest $request): Response
+    protected function main(ServerRequest $request, OperatingSystem $os): Response
     {
         // handle the request here
     }
