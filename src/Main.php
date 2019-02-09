@@ -15,7 +15,7 @@ use Innmind\Http\{
     Exception\DomainException,
 };
 use Innmind\Filesystem\Stream\StringStream;
-use Innmind\TimeContinuum\TimeContinuum\Earth;
+use Innmind\TimeContinuum\TimeContinuumInterface;
 use Innmind\OperatingSystem\{
     Factory,
     OperatingSystem,
@@ -28,10 +28,9 @@ abstract class Main
         Sender $send = null,
         TimeContinuumInterface $clock = null
     ) {
-        $clock = $clock ?? new Earth;
-        $factory = $factory ?? ServerRequestFactory::default();
-        $send = $send ?? new ResponseSender($clock);
         $os = Factory::build($clock);
+        $factory = $factory ?? ServerRequestFactory::default();
+        $send = $send ?? new ResponseSender($os->clock());
 
         try {
             $request = $factory->make();
