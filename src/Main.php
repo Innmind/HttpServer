@@ -32,6 +32,8 @@ abstract class Main
         $factory = $factory ?? ServerRequestFactory::default();
         $send = $send ?? new ResponseSender($os->clock());
 
+        $this->preload($os);
+
         try {
             $request = $factory->make();
         } catch (DomainException $e) {
@@ -49,6 +51,19 @@ abstract class Main
         $send($response);
 
         $this->terminate($request, $response);
+    }
+
+    /**
+     * Use this method to build the app
+     *
+     * Exceptions that occured in this method will not be called and may so be
+     * rendered to the client. This is the expected behaviour so it's easier to
+     * watch errors when developping the app. This method should never throw an
+     * exception when in production mode, the bootstrap of your app must be
+     * "pure" (in FP terms)
+     */
+    protected function preload(OperatingSystem $os): void
+    {
     }
 
     abstract protected function main(ServerRequest $request, OperatingSystem $os): Response;
