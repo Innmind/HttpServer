@@ -9,6 +9,7 @@ use Innmind\Http\{
     Sender,
     ResponseSender,
     Message\ServerRequest,
+    Message\Environment,
     Message\Response,
     Message\StatusCode\StatusCode,
     ProtocolVersion\ProtocolVersion,
@@ -32,8 +33,6 @@ abstract class Main
         $factory = $factory ?? ServerRequestFactory::default();
         $send = $send ?? new ResponseSender($os->clock());
 
-        $this->preload($os);
-
         try {
             $request = $factory->make();
         } catch (DomainException $e) {
@@ -41,6 +40,8 @@ abstract class Main
 
             return;
         }
+
+        $this->preload($os, $request->environment());
 
         try {
             $response = $this->main($request, $os);
@@ -62,7 +63,7 @@ abstract class Main
      * exception when in production mode, the bootstrap of your app must be
      * "pure" (in FP terms)
      */
-    protected function preload(OperatingSystem $os): void
+    protected function preload(OperatingSystem $os, Environment $env): void
     {
     }
 
