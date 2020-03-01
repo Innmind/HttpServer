@@ -67,7 +67,7 @@ abstract class Main
     {
     }
 
-    abstract protected function main(ServerRequest $request, OperatingSystem $os): Response;
+    abstract protected function main(ServerRequest $request): Response;
 
     protected function terminate(ServerRequest $request, Response $response): void
     {
