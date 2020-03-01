@@ -24,7 +24,7 @@ use Innmind\OperatingSystem\{
 abstract class Main
 {
     final public function __construct(
-        ServerRequestFactoryInterface $factory = null,
+        ServerRequestFactoryInterface $makeRequest = null,
         Sender $send = null,
         OperatingSystem $os = null
     ) {
@@ -43,7 +43,7 @@ abstract class Main
         $this->preload($os, $request->environment());
 
         try {
-            $response = $this->main($request, $os);
+            $response = $this->main($request);
         } catch (\Throwable $e) {
             $response = $this->serverError($request);
         }
