@@ -20,7 +20,7 @@ new class extends Main
             $code->associatedReasonPhrase(),
             $request->protocolVersion(),
             null,
-            $request->body()
+            $request->body(),
         );
     }
 };

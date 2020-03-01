@@ -29,9 +29,9 @@ abstract class Main
         Sender $send = null,
         OperatingSystem $os = null
     ) {
-        $os = $os ?? Factory::build();
-        $factory = $factory ?? ServerRequestFactory::default();
-        $send = $send ?? new ResponseSender($os->clock());
+        $os ??= Factory::build();
+        $factory ??= ServerRequestFactory::default();
+        $send ??= new ResponseSender($os->clock());
 
         try {
             $request = $factory->make();
@@ -79,7 +79,7 @@ abstract class Main
             $code->associatedReasonPhrase(),
             new ProtocolVersion(1, 0),
             null,
-            new StringStream('Request doesn\'t respect HTTP protocol')
+            new StringStream('Request doesn\'t respect HTTP protocol'),
         );
     }
 
@@ -88,7 +88,7 @@ abstract class Main
         return new Response\Response(
             $code = StatusCode::of('INTERNAL_SERVER_ERROR'),
             $code->associatedReasonPhrase(),
-            $request->protocolVersion()
+            $request->protocolVersion(),
         );
     }
 }
