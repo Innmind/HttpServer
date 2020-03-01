@@ -7,13 +7,12 @@ use Innmind\HttpServer\Main;
 use Innmind\Http\Message\{
     ServerRequest,
     Response,
-    StatusCode\StatusCode,
+    StatusCode,
 };
-use Innmind\OperatingSystem\OperatingSystem;
 
 new class extends Main
 {
-    protected function main(ServerRequest $request, OperatingSystem $os): Response
+    protected function main(ServerRequest $request): Response
     {
         //echo back server
         return new Response\Response(
@@ -21,7 +20,7 @@ new class extends Main
             $code->associatedReasonPhrase(),
             $request->protocolVersion(),
             null,
-            $request->body()
+            $request->body(),
         );
     }
 };

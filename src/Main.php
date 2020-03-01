@@ -11,12 +11,11 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Environment,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    ProtocolVersion\ProtocolVersion,
+    Message\StatusCode,
+    ProtocolVersion,
     Exception\DomainException,
 };
-use Innmind\Filesystem\Stream\StringStream;
-use Innmind\TimeContinuum\TimeContinuumInterface;
+use Innmind\Stream\Readable\Stream;
 use Innmind\OperatingSystem\{
     Factory,
     OperatingSystem,
@@ -25,16 +24,16 @@ use Innmind\OperatingSystem\{
 abstract class Main
 {
     final public function __construct(
-        ServerRequestFactoryInterface $factory = null,
+        ServerRequestFactoryInterface $makeRequest = null,
         Sender $send = null,
-        TimeContinuumInterface $clock = null
+        OperatingSystem $os = null
     ) {
-        $os = Factory::build($clock);
-        $factory = $factory ?? ServerRequestFactory::default();
-        $send = $send ?? new ResponseSender($os->clock());
+        $os ??= Factory::build();
+        $makeRequest ??= ServerRequestFactory::default();
+        $send ??= new ResponseSender($os->clock());
 
         try {
-            $request = $factory->make();
+            $request = $makeRequest();
         } catch (DomainException $e) {
             $send($this->badRequest());
 
@@ -44,7 +43,7 @@ abstract class Main
         $this->preload($os, $request->environment());
 
         try {
-            $response = $this->main($request, $os);
+            $response = $this->main($request);
         } catch (\Throwable $e) {
             $response = $this->serverError($request);
         }
@@ -57,17 +56,16 @@ abstract class Main
     /**
      * Use this method to build the app
      *
-     * Exceptions that occured in this method will not be called and may so be
+     * Exceptions that occured in this method will not be caught and may so be
      * rendered to the client. This is the expected behaviour so it's easier to
      * watch errors when developping the app. This method should never throw an
-     * exception when in production mode, the bootstrap of your app must be
-     * "pure" (in FP terms)
+     * exception when in production mode.
      */
     protected function preload(OperatingSystem $os, Environment $env): void
     {
     }
 
-    abstract protected function main(ServerRequest $request, OperatingSystem $os): Response;
+    abstract protected function main(ServerRequest $request): Response;
 
     protected function terminate(ServerRequest $request, Response $response): void
     {
@@ -80,7 +78,7 @@ abstract class Main
             $code->associatedReasonPhrase(),
             new ProtocolVersion(1, 0),
             null,
-            new StringStream('Request doesn\'t respect HTTP protocol')
+            Stream::ofContent('Request doesn\'t respect HTTP protocol'),
         );
     }
 
@@ -89,7 +87,7 @@ abstract class Main
         return new Response\Response(
             $code = StatusCode::of('INTERNAL_SERVER_ERROR'),
             $code->associatedReasonPhrase(),
-            $request->protocolVersion()
+            $request->protocolVersion(),
         );
     }
 }
