@@ -27,9 +27,9 @@ abstract class Main
     final public function __construct(
         ServerRequestFactoryInterface $factory = null,
         Sender $send = null,
-        TimeContinuumInterface $clock = null
+        OperatingSystem $os = null
     ) {
-        $os = Factory::build($clock);
+        $os = $os ?? Factory::build();
         $factory = $factory ?? ServerRequestFactory::default();
         $send = $send ?? new ResponseSender($os->clock());
 
