@@ -11,12 +11,11 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Environment,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    ProtocolVersion\ProtocolVersion,
+    Message\StatusCode,
+    ProtocolVersion,
     Exception\DomainException,
 };
-use Innmind\Filesystem\Stream\StringStream;
-use Innmind\TimeContinuum\TimeContinuumInterface;
+use Innmind\Stream\Readable\Stream;
 use Innmind\OperatingSystem\{
     Factory,
     OperatingSystem,
@@ -30,11 +29,11 @@ abstract class Main
         OperatingSystem $os = null
     ) {
         $os ??= Factory::build();
-        $factory ??= ServerRequestFactory::default();
+        $makeRequest ??= ServerRequestFactory::default();
         $send ??= new ResponseSender($os->clock());
 
         try {
-            $request = $factory->make();
+            $request = $makeRequest();
         } catch (DomainException $e) {
             $send($this->badRequest());
 
@@ -79,7 +78,7 @@ abstract class Main
             $code->associatedReasonPhrase(),
             new ProtocolVersion(1, 0),
             null,
-            new StringStream('Request doesn\'t respect HTTP protocol'),
+            Stream::ofContent('Request doesn\'t respect HTTP protocol'),
         );
     }
 
