@@ -20,11 +20,17 @@ use Innmind\HttpServer\Main;
 use Innmind\Http\Message\{
     ServerRequest,
     Response,
+    Environment,
 };
 use Innmind\OperatingSystem\OperatingSystem;
 
 new class extends Main {
-    protected function main(ServerRequest $request, OperatingSystem $os): Response
+    protected function preload(OperatingSystem $os, Environment $env): void
+    {
+        // optional, use this method to boostrap your app
+    }
+
+    protected function main(ServerRequest $request): Response
     {
         // handle the request here
     }
