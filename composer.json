@@ -31,6 +31,6 @@
         }
     },
     "require-dev": {
-        "vimeo/psalm": "^3.9"
+        "vimeo/psalm": "~4.4"
     }
 }
