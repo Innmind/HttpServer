@@ -82,7 +82,7 @@ abstract class Main
         );
     }
 
-    private function serverError(ServerRequest $request) : Response
+    private function serverError(ServerRequest $request): Response
     {
         return new Response\Response(
             $code = StatusCode::of('INTERNAL_SERVER_ERROR'),
