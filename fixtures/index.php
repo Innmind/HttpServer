@@ -16,8 +16,7 @@ new class extends Main
     {
         //echo back server
         return new Response\Response(
-            $code = StatusCode::of('OK'),
-            $code->associatedReasonPhrase(),
+            StatusCode::ok,
             $request->protocolVersion(),
             null,
             $request->body(),
