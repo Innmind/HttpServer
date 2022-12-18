@@ -31,7 +31,7 @@
         }
     },
     "require-dev": {
-        "vimeo/psalm": "~4.4",
+        "vimeo/psalm": "~4.30",
         "innmind/coding-standard": "~2.0"
     }
 }
