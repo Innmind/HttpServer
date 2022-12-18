@@ -26,7 +26,7 @@ abstract class Main
     final public function __construct(
         ServerRequestFactoryInterface $makeRequest = null,
         Sender $send = null,
-        OperatingSystem $os = null
+        OperatingSystem $os = null,
     ) {
         $os ??= Factory::build();
         $makeRequest ??= ServerRequestFactory::default();
