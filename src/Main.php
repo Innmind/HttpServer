@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Innmind\HttpServer;
 
 use Innmind\Http\{
-    Factory\ServerRequestFactory as ServerRequestFactoryInterface,
     Factory\ServerRequest\ServerRequestFactory,
     Sender,
     ResponseSender,
@@ -23,14 +22,11 @@ use Innmind\OperatingSystem\{
 
 abstract class Main
 {
-    final public function __construct(
-        ServerRequestFactoryInterface $makeRequest = null,
-        Sender $send = null,
-        OperatingSystem $os = null,
-    ) {
-        $os ??= Factory::build();
-        $makeRequest ??= ServerRequestFactory::default();
-        $send ??= new ResponseSender($os->clock());
+    final public function __construct()
+    {
+        $os = Factory::build();
+        $makeRequest = ServerRequestFactory::default();
+        $send = new ResponseSender($os->clock());
 
         try {
             $request = $makeRequest();
