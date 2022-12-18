@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Innmind\HttpServer;
 
 use Innmind\Http\{
-    Factory\ServerRequestFactory as ServerRequestFactoryInterface,
     Factory\ServerRequest\ServerRequestFactory,
     Sender,
     ResponseSender,
@@ -15,7 +14,7 @@ use Innmind\Http\{
     ProtocolVersion,
     Exception\DomainException,
 };
-use Innmind\Stream\Readable\Stream;
+use Innmind\Filesystem\File\Content;
 use Innmind\OperatingSystem\{
     Factory,
     OperatingSystem,
@@ -23,14 +22,11 @@ use Innmind\OperatingSystem\{
 
 abstract class Main
 {
-    final public function __construct(
-        ServerRequestFactoryInterface $makeRequest = null,
-        Sender $send = null,
-        OperatingSystem $os = null
-    ) {
-        $os ??= Factory::build();
-        $makeRequest ??= ServerRequestFactory::default();
-        $send ??= new ResponseSender($os->clock());
+    final public function __construct()
+    {
+        $os = Factory::build();
+        $makeRequest = ServerRequestFactory::default($os->clock());
+        $send = new ResponseSender($os->clock());
 
         try {
             $request = $makeRequest();
@@ -74,19 +70,17 @@ abstract class Main
     private function badRequest(): Response
     {
         return new Response\Response(
-            $code = StatusCode::of('BAD_REQUEST'),
-            $code->associatedReasonPhrase(),
-            new ProtocolVersion(1, 0),
+            StatusCode::badRequest,
+            ProtocolVersion::v10,
             null,
-            Stream::ofContent('Request doesn\'t respect HTTP protocol'),
+            Content\Lines::ofContent('Request doesn\'t respect HTTP protocol'),
         );
     }
 
     private function serverError(ServerRequest $request): Response
     {
         return new Response\Response(
-            $code = StatusCode::of('INTERNAL_SERVER_ERROR'),
-            $code->associatedReasonPhrase(),
+            StatusCode::internalServerError,
             $request->protocolVersion(),
         );
     }
