@@ -18,13 +18,14 @@ use Innmind\Filesystem\File\Content;
 use Innmind\OperatingSystem\{
     Factory,
     OperatingSystem,
+    Config,
 };
 
 abstract class Main
 {
-    final public function __construct()
+    final public function __construct(Config $config = null)
     {
-        $os = Factory::build();
+        $os = Factory::build(null, $config);
         $makeRequest = ServerRequestFactory::default($os->clock());
         $send = new ResponseSender($os->clock());
 
