@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.0 - 2023-01-29
+
+### Added
+
+- Support for `innmind/http:~6.0`
+
 ## 3.1.0 - 2023-01-02
 
 ### Added
