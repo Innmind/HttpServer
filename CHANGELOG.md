@@ -7,6 +7,10 @@
 - Requires `innmind/http:~7.0`
 - Requires `innmind/operating-system:~4.0`
 
+### Removed
+
+- Support for PHP `8.1`
+
 ## 3.2.0 - 2023-01-29
 
 ### Added
