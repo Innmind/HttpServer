@@ -7,10 +7,10 @@ use Innmind\Http\{
     Factory\ServerRequest\ServerRequestFactory,
     Sender,
     ResponseSender,
-    Message\ServerRequest,
-    Message\Environment,
-    Message\Response,
-    Message\StatusCode,
+    ServerRequest,
+    ServerRequest\Environment,
+    Response,
+    Response\StatusCode,
     ProtocolVersion,
     Exception\DomainException,
 };
@@ -25,7 +25,7 @@ abstract class Main
 {
     final public function __construct(Config $config = null)
     {
-        $os = Factory::build(null, $config);
+        $os = Factory::build($config);
         $makeRequest = ServerRequestFactory::default($os->clock());
         $send = new ResponseSender($os->clock());
 
@@ -70,17 +70,17 @@ abstract class Main
 
     private function badRequest(): Response
     {
-        return new Response\Response(
+        return Response::of(
             StatusCode::badRequest,
             ProtocolVersion::v10,
             null,
-            Content\Lines::ofContent('Request doesn\'t respect HTTP protocol'),
+            Content::ofString('Request doesn\'t respect HTTP protocol'),
         );
     }
 
     private function serverError(ServerRequest $request): Response
     {
-        return new Response\Response(
+        return Response::of(
             StatusCode::internalServerError,
             $request->protocolVersion(),
         );

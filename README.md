@@ -17,10 +17,10 @@ composer require innmind/http-server
 require 'vendor/autoload.php';
 
 use Innmind\HttpServer\Main;
-use Innmind\Http\Message\{
+use Innmind\Http\{
     ServerRequest,
     Response,
-    Environment,
+    ServerRequest\Environment,
 };
 use Innmind\OperatingSystem\OperatingSystem;
 
