@@ -5,7 +5,6 @@ namespace Innmind\HttpServer;
 
 use Innmind\Http\{
     Factory\ServerRequest\ServerRequestFactory,
-    Sender,
     ResponseSender,
     ServerRequest,
     ServerRequest\Environment,
