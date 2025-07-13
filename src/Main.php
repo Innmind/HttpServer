@@ -22,7 +22,7 @@ use Innmind\OperatingSystem\{
 
 abstract class Main
 {
-    final public function __construct(Config $config = null)
+    final public function __construct(?Config $config = null)
     {
         $os = Factory::build($config);
         $makeRequest = ServerRequestFactory::default($os->clock());
