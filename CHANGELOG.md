@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.0.0 - 2025-07-13
+
+### Changed
+
+- Requires `innmind/operating-system:~6.0`
+- Requires `innmind/http:~8.0`
+
+### Fixed
+
+- PHP `8.4` deprecation
+
 ## 4.1.0 - 2024-03-10
 
 ### Added

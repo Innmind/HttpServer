@@ -4,8 +4,8 @@ declare(strict_types = 1);
 namespace Innmind\HttpServer;
 
 use Innmind\Http\{
-    Factory\ServerRequest\ServerRequestFactory,
-    ResponseSender,
+    Factory\ServerRequestFactory,
+    Response\Sender\Native,
     ServerRequest,
     ServerRequest\Environment,
     Response,
@@ -22,11 +22,11 @@ use Innmind\OperatingSystem\{
 
 abstract class Main
 {
-    final public function __construct(Config $config = null)
+    final public function __construct(?Config $config = null)
     {
         $os = Factory::build($config);
-        $makeRequest = ServerRequestFactory::default($os->clock());
-        $send = new ResponseSender($os->clock());
+        $makeRequest = ServerRequestFactory::native($os->clock());
+        $send = Native::of($os->clock());
 
         try {
             $request = $makeRequest();
@@ -41,10 +41,12 @@ abstract class Main
         try {
             $response = $this->main($request);
         } catch (\Throwable $e) {
+            throw $e;
             $response = $this->serverError($request);
         }
 
-        $send($response);
+        // Swallow errors to never render them to the client
+        $_ = $send($response)->memoize();
 
         $this->terminate($request, $response);
     }
