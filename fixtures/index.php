@@ -4,22 +4,23 @@ declare(strict_types = 1);
 require __DIR__.'/../vendor/autoload.php';
 
 use Innmind\HttpServer\Main;
-use Innmind\Http\Message\{
+use Innmind\Http\{
     ServerRequest,
     Response,
-    StatusCode,
+    Response\StatusCode,
 };
+use Innmind\Filesystem\File\Content;
 
 new class extends Main
 {
     protected function main(ServerRequest $request): Response
     {
-        //echo back server
-        return new Response\Response(
+        // Echo back server
+        return Response::of(
             StatusCode::ok,
             $request->protocolVersion(),
             null,
-            $request->body(),
+            Content::ofString('Hello world'),
         );
     }
 };
