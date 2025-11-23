@@ -4,8 +4,6 @@ on: [push, pull_request]
 
 jobs:
   psalm:
-    uses: innmind/github-workflows/.github/workflows/psalm-matrix.yml@main
+    uses: innmind/github-workflows/.github/workflows/psalm-matrix.yml@next
   cs:
-    uses: innmind/github-workflows/.github/workflows/cs.yml@main
-    with:
-      php-version: '8.2'
+    uses: innmind/github-workflows/.github/workflows/cs.yml@next
