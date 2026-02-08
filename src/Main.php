@@ -48,7 +48,6 @@ abstract class Main
         try {
             $response = $this->main($request);
         } catch (\Throwable $e) {
-            throw $e;
             $response = $this->serverError($request);
         }
 
