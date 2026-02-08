@@ -5,6 +5,8 @@
 ### Changed
 
 - Requires PHP `8.4`
+- Requires `innmind/operating-system:~7.0`
+- `Innmind\HttpServer\Main::preload()` environment variables are now expressed with a `Innmind\Immutable\Map<string, string>`
 
 ## 5.0.0 - 2025-07-13
 
