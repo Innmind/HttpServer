@@ -7,7 +7,6 @@ use Innmind\Http\{
     Factory\ServerRequestFactory,
     Response\Sender\Native,
     ServerRequest,
-    ServerRequest\Environment,
     Response,
     Response\StatusCode,
     ProtocolVersion,
@@ -19,6 +18,7 @@ use Innmind\OperatingSystem\{
     OperatingSystem,
     Config,
 };
+use Innmind\Immutable\Map;
 
 abstract class Main
 {
@@ -36,12 +36,18 @@ abstract class Main
             return;
         }
 
-        $this->preload($os, $request->environment());
+        /** @var Map<string, string> */
+        $env = Map::of();
+
+        foreach (\getenv() as $key => $value) {
+            $env = ($env)($key, $value);
+        }
+
+        $this->preload($os, $env);
 
         try {
             $response = $this->main($request);
         } catch (\Throwable $e) {
-            throw $e;
             $response = $this->serverError($request);
         }
 
@@ -58,8 +64,10 @@ abstract class Main
      * rendered to the client. This is the expected behaviour so it's easier to
      * watch errors when developping the app. This method should never throw an
      * exception when in production mode.
+     *
+     * @param Map<string, string> $env Environment variables
      */
-    protected function preload(OperatingSystem $os, Environment $env): void
+    protected function preload(OperatingSystem $os, Map $env): void
     {
     }
 
