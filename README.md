@@ -20,12 +20,15 @@ use Innmind\HttpServer\Main;
 use Innmind\Http\{
     ServerRequest,
     Response,
-    ServerRequest\Environment,
 };
 use Innmind\OperatingSystem\OperatingSystem;
+use Innmind\Immutable\Map;
 
 new class extends Main {
-    protected function preload(OperatingSystem $os, Environment $env): void
+    /**
+     * @param Map<string, string> $env
+     */
+    protected function preload(OperatingSystem $os, Map $env): void
     {
         // optional, use this method to boostrap your app
     }
