@@ -1,6 +1,6 @@
 # Http Server
 
-[![Build Status](https://github.com/innmind/httpserver/workflows/CI/badge.svg?branch=master)](https://github.com/innmind/httpserver/actions?query=workflow%3ACI)
+[![CI](https://github.com/Innmind/HttpServer/actions/workflows/ci.yml/badge.svg)](https://github.com/Innmind/HttpServer/actions/workflows/ci.yml)
 [![Type Coverage](https://shepherd.dev/github/innmind/httpserver/coverage.svg)](https://shepherd.dev/github/innmind/httpserver)
 
 Entry point to build an HTTP server.
