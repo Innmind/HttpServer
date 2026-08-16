@@ -2,7 +2,10 @@
     "name": "innmind/http-server",
     "type": "library",
     "description": "Http server",
-    "keywords": ["http", "server"],
+    "keywords": [
+        "http",
+        "server"
+    ],
     "homepage": "http://github.com/Innmind/HttpServer",
     "license": "MIT",
     "authors": [
